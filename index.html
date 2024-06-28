@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUBLE 로그인</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #loginForm, #welcomeMessage, #confirmationMessage, #schoolCheckMessage {
+            display: none;
+        }
+        #loginForm {
+            display: block;
+        }
+        #container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="loginForm">
+            <h1>BUBLE 로그인</h1>
+            <label for="name">로그인(이름):</label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password"><br><br>
+            <button onclick="login()">로그인</button>
+        </div>
+        <div id="welcomeMessage"></div>
+        <div id="schoolCheckMessage">
+            <p>학교가 경북 경주시 신라중학교입니까?</p>
+            <button onclick="schoolCheck(true)">네</button>
+            <button onclick="schoolCheck(false)">아니요</button>
+        </div>
+        <div id="confirmationMessage">
+            <p>현재 사이트는 월성중학교는 지원하지 않습니다. 그래도 들어가시겠습니까?</p>
+            <button onclick="confirmChoice(true)">네</button>
+            <button onclick="confirmChoice(false)">아니요</button>
+        </div>
+    </div>
+
+    <script>
+        const allowedNames = ["최지용", "곽유신", "김형준", "임성훈", "양동욱", "최영빈"];
+        const correctPassword = "1357";
+        const redirectUrl = "https://fgantas.jimdofree.com/";  // 지정된 링크
+
+        let currentName = "";
+
+        function login() {
+            const name = document.getElementById("name").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (allowedNames.includes(name) && password === correctPassword) {
+                currentName = name;
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("schoolCheckMessage").style.display = "block";
+            } else if (name === "조인찬" && password === correctPassword) {
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("confirmationMessage").style.display = "block";
+            } else {
+                alert("허용되지 않은 이름이거나 비밀번호가 잘못되었습니다 만약 입력한 정보가 맞는데도 않될경우 hangum135@gmail.com으로 문의 해주십시요.");
+            }
+        }
+
+        function schoolCheck(choice) {
+            if (choice) {
+                document.getElementById("schoolCheckMessage").style.display = "none";
+                document.getElementById("welcomeMessage").innerHTML = `<h1>${currentName} 환영합니다</h1><p>접속 중입니다...</p>`;
+                document.getElementById("welcomeMessage").style.display = "block";
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+            } else {
+                document.getElementById("schoolCheckMessage").style.display = "none";
+                document.getElementById("loginForm").style.display = "block";
+            }
+        }
+
+        function confirmChoice(choice) {
+            if (choice) {
+                window.location.href = redirectUrl;
+            } else {
+                window.close();
+            }
+        }
+    </script>
+</body>
+</html>
